@@ -1,0 +1,14 @@
+{
+  "name": "middleware-executor",
+  "version": "0.0.0",
+  "description": "execute express middleware in builtin node:http",
+  "main": "main.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Rendra Sukana",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
