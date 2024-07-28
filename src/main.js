@@ -1,37 +1,45 @@
-// PASS if promises, but after implementation, error don't resolve and stacks dont move
-// PASS if one middleware
-// PASS if multiple middlewares
-// PASS if multiple execute() calls
-// PASS if middleware.execute() called don't accept middleware.add()
-// PASS if middleware calls error
+const http = require('http')
 // PASS if middleware skip routes
-// CREATED if no route found (res.headersSent is not called)
-// if res.headersSent is true, getNext() should return
-
-// enhance: add use() that accepts a route so route mapping can be done through use()
-// wrap this.res and this.req in c. this helps with compatibility with other web servers
+// enhance: wrap this.res and this.req in c. this helps with compatibility with other web servers
 
 
 module.exports = class MiddlewareStack {
     constructor() {
         this.middlewareStack = []
         this.middlewareCompiled = false //if compiled, we don't accept more middlewares.
+
+        http.METHODS.forEach(method => {
+            const lowercaseMethod = method.toLowerCase();
+            this[lowercaseMethod] = function(path, handler) {
+                this.callHttpMethod(handler, path, lowercaseMethod);
+            };
+        });
+    }
+
+    callHttpMethod(handler, path, method) {
+        this.use((req, res, next) => {
+            let requestPath = `/${req.url.split('/')[1]}`
+            if (requestPath === path && req.method === method) handler(req, res)
+            next()
+        })
     }
 
     use(arg, route) {
         if (this.middlewareCompiled) return
         if (arg instanceof Function) this.middlewareStack.push(arg)
         if (typeof arg === 'string' && arguments.length === 2) {
-            let path = `/${req.url.split('/')[1]}`
             this.middlewareStack.push((req, res, next) => {
-                if (arg === path) route()
-                next()
+                let path = `/${req.url.split('/')[1]}`
+                if (path === arg) route(req, res, next)
             })
         }
     }
 
     async execute(req, res) {
         this.middlewareCompiled = true
+        if (!this.middlewareStack.length) {
+            console.warn('[middleware-executor] no middlewares registered, be sure to use app.use() before calling app.execute()')
+        }
         await new MiddlewareStackExecutor(req, res, this.middlewareStack)
             .execute()
             .then(() => {
@@ -74,7 +82,7 @@ class MiddlewareStackExecutor {
      * the first time execute() is called, in my machine it requires 12-14ms, the next one 0.3-0.6ms
      */
     async execute() {
-        this.middlewareCompiled = true
+        if (!this.middlewareStack.length) return
         await this.executeNext()
     }
 }

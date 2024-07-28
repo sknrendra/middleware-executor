@@ -1,6 +1,20 @@
 const MiddlewareStack = require('../src/main')
 
 describe('Middleware stack', () => {
+    it('can run with no middleware registered', async () => {
+        let app = new MiddlewareStack()
+    
+        let result = ''
+        let req = {url: '/first-test',}
+        let res = {
+            writeHead(status, header) {},
+            end(val) {
+                result = val
+            }
+        }
+        await app.execute(req, res)
+        expect(result).toEqual(`path ${req.url} not found`)
+    });
     it('can run single middleware', () => {
         let app = new MiddlewareStack()
     
@@ -18,6 +32,31 @@ describe('Middleware stack', () => {
         })
         app.execute(req, res)
         expect(result).toBe('Hello World');
+    });
+    it('can run single async middlewares', async () => {
+        let app = new MiddlewareStack()
+    
+        let result = ''
+        let req = {url: '/first-test',}
+        let res = {
+            writeHead(status, header) {},
+            end(val) {
+                result = val
+            }
+        }
+        app.use(async (req, res, next) => {
+            let resolvedValue = await new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve('done')
+                }, 1000)
+            })
+            res.writeHead(200, {message: 'Success'})
+            res.end(resolvedValue)
+            res.headersSent = true
+            next()
+        })
+        await app.execute(req, res)
+        expect(result).toEqual('done')
     });
     it('can run multiple middlewares', async () => {
         let app = new MiddlewareStack()
@@ -136,7 +175,7 @@ describe('Middleware stack', () => {
             next()
         })
         await app.execute(req, res)
-        console.log('executing test..', result)
         expect(result).toEqual('error encountered')
     });
+    
 })
