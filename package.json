@@ -1,6 +1,6 @@
 {
   "name": "middleware-executor",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "execute express middleware in builtin node:http",
   "main": "main.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "README.md"
   ],
   "repository": {
-      "type": "git",
-      "url": "https://github.com/sknrendra/middleware-executor.git"
+    "type": "git",
+    "url": "https://github.com/sknrendra/middleware-executor.git"
   }
 }
