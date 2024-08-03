@@ -1,7 +1,5 @@
 const http = require('http')
-// PASS if middleware skip routes
-// enhance: wrap this.res and this.req in c. this helps with compatibility with other web servers
-
+// enhance: think about wrapping this.res and this.req in "c" object.
 
 module.exports = class MiddlewareStack {
     constructor() {

@@ -1,6 +1,8 @@
 const http = require('http')
 const MiddlewareStack = require('../src/main')
 
+// untested: if middleware skip routes
+
 describe('Routing', () => {
     it('should execute matching http method', async () => {
         let app = new MiddlewareStack()
