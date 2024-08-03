@@ -72,3 +72,5 @@ so instead of using `app.use()` inside a handler, we call it outside of it. Note
 
 ## Note
 When using the request and response objects, use Node's built-in methods like res.writeHead() and res.end(). We have not yet implemented middleware to "enrich" the res object with methods such as res.json() or res.sendFile().
+
+`app.execute()` will only run code that are registered as a middleware inside `middleware-executor`. This does mean that everything should be run as a middleware, even if it's just a single `console.log()` command
