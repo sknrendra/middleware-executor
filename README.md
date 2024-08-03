@@ -4,6 +4,7 @@
 
 - Lightweight, only 2.91kB
 - No dependencies
+- Use node.js fast `http` module 
 
 ## Installation
 
