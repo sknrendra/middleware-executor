@@ -1,6 +1,6 @@
 {
   "name": "middleware-executor",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "execute express middleware in builtin node:http",
   "main": "main.js",
   "scripts": {
