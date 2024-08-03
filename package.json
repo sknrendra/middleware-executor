@@ -14,5 +14,9 @@
   "files": [
     "main.js",
     "README.md"
-  ]
+  ],
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/sknrendra/middleware-executor.git"
+  }
 }

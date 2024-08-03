@@ -1,6 +1,9 @@
 # middleware-executor
 
-`middleware-executor` provides middleware functionality similar to Express, but for Node.js's built-in HTTP module. It allows you to define middleware, route handlers, and create an HTTP server using Node's native methods.
+`middleware-executor` allows you to use express.js middlewares on node's builtin http module. It also provides middleware functionality similar to Express, but for Node.js's built-in HTTP module. It allows you to define middleware, route handlers, and create an HTTP server using Node's native methods. Other advantages:
+
+- Lightweight, only 2.91kB
+- No dependencies
 
 ## Installation
 
